@@ -14,7 +14,8 @@ flags.DEFINE_float("learning_rate", 0.0002, "Learning rate  for adam [0.0002]")
 flags.DEFINE_float("beta1", 0.5, "Momentum term of adam [0.5]")
 flags.DEFINE_float("smoothing", 0.9, "Smoothing term for discriminator real (class) loss [0.9]")
 flags.DEFINE_float("lambda_val", 1.0, "determines the relative importance of style ambiguity loss [1.0]")
-flags.DEFINE_integer("train_size", np.inf, "The size of train images [np.inf]")
+flags.DEFINE_float("train_size", np.inf, "The size of train images [np.inf]")
+# change integer to float
 flags.DEFINE_integer("save_itr", 500, "The number of iterations to run for saving checkpoints")
 flags.DEFINE_integer("sample_itr", 500, "The number of iterations to run for sampling from the sampler")
 flags.DEFINE_integer("batch_size", 64, "The size of batch images [64]")
@@ -25,7 +26,7 @@ flags.DEFINE_integer("output_height", 64, "The size of the output images to prod
 flags.DEFINE_integer("output_width", None, "The size of the output images to produce. If None, same value as output_height [None]")
 flags.DEFINE_string("dataset", "celebA", "The name of dataset [celebA, mnist, lsun]")
 flags.DEFINE_string("input_fname_pattern", "*.jpg", "Glob pattern of filename of input images [*]")
-flags.DEFINE_string("log_dir", 'logs', "Directory to store logs [logs]")
+#flags.DEFINE_string("log_dir", 'logs', "Directory to store logs [logs]")
 flags.DEFINE_string("checkpoint_dir", None, "Directory name to save the checkpoints [<FLAGS.log_dir>/checkpoint]")
 flags.DEFINE_string("sample_dir", None, "Directory name to save the image samples [<FLAGS.log_dir>/samples]")
 flags.DEFINE_string("load_dir", None, "Directory that specifies checkpoint to load")
@@ -46,13 +47,15 @@ FLAGS = flags.FLAGS
 def main(_):
   print('Before processing flags')
   pp.pprint(flags.FLAGS.__flags)
-  if FLAGS.use_s3:
-    import aws
-    if FLAGS.s3_bucket is None:
-      raise ValueError('use_s3 flag set, but no bucket set. ')
-    # check to see if s3 bucket exists:
-    elif not aws.bucket_exists(FLAGS.s3_bucket):
-      raise ValueError('`use_s3` flag set, but bucket "%s" doesn\'t exist. Not using s3' % FLAGS.s3_bucket)
+
+#  if FLAGS.use_s3:
+#    #import aws
+#    from google.cloud import storage
+#    if FLAGS.s3_bucket is None:
+#      raise ValueError('use_s3 flag set, but no bucket set. ')
+#    # check to see if s3 bucket exists:
+#    elif not aws.bucket_exists(FLAGS.s3_bucket):
+#      raise ValueError('`use_s3` flag set, but bucket "%s" doesn\'t exist. Not using s3' % FLAGS.s3_bucket)
 
 
   if FLAGS.input_width is None:
