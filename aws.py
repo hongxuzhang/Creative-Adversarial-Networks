@@ -6,30 +6,27 @@ import os
 
 
 def bucket_exists(bucket):
-  s3 = boto3.resource('s3')
-  return s3.Bucket(bucket) in s3.buckets.all()
-def upload_path(local_directory, bucket, destination, certain_upload=False):
-  client = boto3.client('s3')
-  # enumerate local files recursively
-  for root, dirs, files in os.walk(local_directory):
+  client = storage.Client()
+  bucket = client.get_bucket(bucket)
+  blobs = list(bucket.list_blobs())
+  return blobs
+#  s3 = boto3.resource('s3')
+#  return s3.Bucket(bucket) in s3.buckets.all()
 
-    for filename in files:
+def upload_path(source_file_name, bucket_name, destination_blob_name, certain_upload=False):
+      """Uploads a file to the bucket."""
+          # bucket_name = "your-bucket-name"
+              # source_file_name = "local/path/to/file"
+                  # destination_blob_name = "storage-object-name"
 
-      # construct the full local path
-      local_path = os.path.join(root, filename)
+                      storage_client = storage.Client()
+                          bucket = storage_client.bucket(bucket_name)
+                              blob = bucket.blob(destination_blob_name)
 
-      # construct the full Dropbox path
-      relative_path = os.path.relpath(local_path, local_directory)
-      s3_path = os.path.join(destination, relative_path)
+                                  blob.upload_from_filename(source_file_name)
 
-      if certain_upload:
-        client.upload_file(local_path, bucket, s3_path)
-        return
-
-      print('Searching "%s" in "%s"' % (s3_path, bucket))
-      try:
-        client.head_object(Bucket=bucket, Key=s3_path)
-        # print("Path found on S3! Skipping %s..." % s3_path)
-      except:
-        print("Uploading %s..." % s3_path)
-        client.upload_file(local_path, bucket, s3_path)
+                                      print(
+                                                "File {} uploaded to {}.".format(
+                                                              source_file_name, destination_blob_name
+                                                          )
+                                            )

@@ -20,5 +20,6 @@ python3 main.py \
 --use_s3 False \
 --can True \
 --train \
---style_net_checkpoint "slim/logs/wikiart/inception_resnet_v2/all/bs=16,lr=0.0001,epochs=100/smol_adam_fixedLR"
+--style_net_checkpoint "/home/zhanghongxu2013/checkpoint" \
+--load_dir "/home/zhanghongxu2013/checkpoint/"	
 # --style_net_checkpoint "logs/inception_resnet_v2/"
